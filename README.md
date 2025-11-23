@@ -308,7 +308,7 @@ Ele contém o formulário de cadastro e a tabela onde os cursos serão exibidos.
 <body>
   <h1>Gerenciar Cursos</h1>
 
-  <form id="formCurso">
+  <form id="formulario">
     <input type="text" id="cod_curso" placeholder="Código do Curso (ex: INF01)">
     <input type="text" id="nome_curso" placeholder="Nome do Curso">
     <input type="text" id="carga_horaria" placeholder="Carga Horária">
@@ -321,29 +321,9 @@ Ele contém o formulário de cadastro e a tabela onde os cursos serão exibidos.
     <input type="text" id="data_fim" placeholder="Data Fim">
     <br>
     <button type="button" id="btnCadastrar"><i class="fas fa-plus"></i>Cadastrar</button>
-    <button type="button" id="btnConsultar"><i class="fas fa-search"></i>Consultar</button>
+    <button type="button" id="btnPesquisar"><i class="fas fa-search"></i>Pesquisar</button>
     <button type="button" id="btnLimpar"><i class="fas fa-eraser"></i>Limpar</button>
   </form>
-
-  <h2>Lista de Cursos</h2>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Código</th>
-        <th>Nome</th>
-        <th>Carga Horária</th>
-        <th>Modalidade</th>
-        <th>Nível</th>
-        <th>Coordenador</th>
-        <th>Descrição</th>
-        <th>Turno</th>
-        <th>Início</th>
-        <th>Fim</th>
-      </tr>
-    </thead>
-    <tbody id="tabelaCursos"></tbody>
-  </table>
 
   <script src="script.js"></script>
 </body>
