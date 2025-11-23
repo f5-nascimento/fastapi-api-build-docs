@@ -356,40 +356,12 @@ Ele contém o formulário de cadastro e a tabela onde os cursos serão exibidos.
 Abaixo está o conteúdo do arquivo `script.js`, responsável por realizar as operações de comunicação entre o frontend e a API FastAPI, incluindo consultas, cadastro e atualização automática da tabela.
 
 ```javascript
+
 const apiUrl = "/curso";
 
-    async function carregarTabela() {
-      try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        const lista = data.cursos || [];
-        const tabela = document.getElementById('tabelaCursos');
-        tabela.innerHTML = '';
 
-        lista.forEach(curso => {
-          const row = `
-            <tr>
-              <td>${curso.cod_curso}</td>
-              <td>${curso.nome_curso}</td>
-              <td>${curso.carga_horaria}</td>
-              <td>${curso.modalidade}</td>
-              <td>${curso.nivel}</td>
-              <td>${curso.coordenador}</td>
-              <td>${curso.descricao}</td>
-              <td>${curso.turno}</td>
-              <td>${curso.data_inicio}</td>
-              <td>${curso.data_fim}</td>
-            </tr>`;
-          tabela.innerHTML += row;
-        });
-      } catch (err) {
-        console.error("Erro ao carregar tabela:", err);
-      }
-    }
-
-
-    async function cadastrarCurso() {
-      const novoCurso = {
+async function cadastrar() {
+    const novoRegistro = {
         cod_curso: document.getElementById('cod_curso').value,
         nome_curso: document.getElementById('nome_curso').value,
         carga_horaria: document.getElementById('carga_horaria').value,
@@ -400,73 +372,70 @@ const apiUrl = "/curso";
         turno: document.getElementById('turno').value,
         data_inicio: document.getElementById('data_inicio').value,
         data_fim: document.getElementById('data_fim').value
-      };
+    };
 
-      try {
+    try {
         const response = await fetch(apiUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(novoCurso)
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(novoRegistro)
         });
 
         if (!response.ok) {
-          alert("Erro ao cadastrar curso. Verifique os dados.");
-          return;
+            alert("Erro ao cadastrar registro. Verifique os dados.");
+            return;
         }
 
-        alert("Curso cadastrado com sucesso!");
+        alert("Cadastro efetuado com sucesso!");
         limparFormulario();
-        carregarTabela();
-      } catch (err) {
-        console.error('Erro ao cadastrar curso:', err);
-      }
+    } catch (err) {
+        console.error('Erro ao cadastrar registro:', err);
+    }
+}
+
+
+async function pesquisar() {
+    const codigo = document.getElementById('cod_curso').value;
+    if (!codigo) {
+        alert("Digite o código para consultar!");
+        return;
     }
 
-
-    async function consultarCurso() {
-      const codigo = document.getElementById('cod_curso').value;
-      if (!codigo) {
-        alert("Digite o código do curso para consultar!");
-        return;
-      }
-
-      try {
+    try {
         const response = await fetch(`${apiUrl}/${codigo}`);
         if (!response.ok) {
-          alert("Curso não encontrado!");
-          return;
+            alert("Registro não encontrado!");
+            return;
         }
 
         const data = await response.json();
-        const curso = data.cursos;
-        if (curso) {
-          document.getElementById('nome_curso').value = curso.nome_curso;
-          document.getElementById('carga_horaria').value = curso.carga_horaria;
-          document.getElementById('modalidade').value = curso.modalidade;
-          document.getElementById('nivel').value = curso.nivel;
-          document.getElementById('coordenador').value = curso.coordenador;
-          document.getElementById('descricao').value = curso.descricao;
-          document.getElementById('turno').value = curso.turno;
-          document.getElementById('data_inicio').value = curso.data_inicio;
-          document.getElementById('data_fim').value = curso.data_fim;
+        const registro = data.cursos;
+        if (registro) {
+            document.getElementById('nome_curso').value = registro.nome_curso;
+            document.getElementById('carga_horaria').value = registro.carga_horaria;
+            document.getElementById('modalidade').value = registro.modalidade;
+            document.getElementById('nivel').value = registro.nivel;
+            document.getElementById('coordenador').value = registro.coordenador;
+            document.getElementById('descricao').value = registro.descricao;
+            document.getElementById('turno').value = registro.turno;
+            document.getElementById('data_inicio').value = registro.data_inicio;
+            document.getElementById('data_fim').value = registro.data_fim;
         }
-      } catch (err) {
-        console.error('Erro ao consultar curso:', err);
-      }
+    } catch (err) {
+        console.error('Erro ao consultar registro:', err);
     }
-
-  
-    function limparFormulario() {
-      document.querySelectorAll('#formCurso input').forEach(input => input.value = '');
-    }
+}
 
 
-    document.getElementById('btnCadastrar').addEventListener('click', cadastrarCurso);
-    document.getElementById('btnConsultar').addEventListener('click', consultarCurso);
-    document.getElementById('btnLimpar').addEventListener('click', limparFormulario);
+function limparFormulario() {
+    document.querySelectorAll('#formulario input').forEach(input => input.value = '');
+}
 
 
-    carregarTabela();
+document.getElementById('btnCadastrar').addEventListener('click', cadastrar);
+document.getElementById('btnPesquisar').addEventListener('click', pesquisar);
+document.getElementById('btnLimpar').addEventListener('click', limparFormulario);
+
 
 ```
 
